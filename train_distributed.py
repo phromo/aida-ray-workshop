@@ -17,6 +17,7 @@ ray.init()
 SEED = 1729 
 N_OUTER_FOLDS = 5
 N_INNER_FOLDS = 5
+NUM_CPUS = 8
 
 @dataclass
 class TrainingConfig:
@@ -30,6 +31,7 @@ class TrainingConfig:
     min_child_samples: int = 20
     reg_alpha: float = 0.0
     reg_lambda: float = 0.0
+    n_jobs: int = NUM_CPUS
     
 
 
@@ -107,7 +109,7 @@ def train_model(dataset_split, training_config: TrainingConfig, seed=None):
     return roc_auc
     #model = lgb.train(params, train_set=train_data, valid_sets=[(dataset_split['dev']['X'], dataset_split['dev']['y'])])
     
-@ray.remote
+@ray.remote(num_cpus=NUM_CPUS)
 def process_work(work_package):
     roc_auc = train_model(work_package['split'], work_package['training_config'], work_package['seed'])
     return roc_auc
