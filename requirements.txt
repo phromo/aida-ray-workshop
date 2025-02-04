@@ -1,6 +1,10 @@
 numpy
+scipy
 scikit-learn
+pandas
 optuna
 lightgbm
-jupyter
-ipython
+ray[data,train,tune,serve]
+tqdm
+py-spy
+
