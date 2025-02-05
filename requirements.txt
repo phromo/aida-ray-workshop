@@ -7,4 +7,6 @@ lightgbm
 ray[data,train,tune,serve]
 tqdm
 py-spy
+jupyter
+matplotlib
 
