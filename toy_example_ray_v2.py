@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import time
 import random
 
@@ -16,20 +17,20 @@ def main():
     wait_times = [random_state.expovariate(0.5) for i in range(n)]
     start = time.time()
     # By using the .remote method on the function object, we invoke it as a ray task
-    results = [do_some_work.remote(x, wait_time) for x, wait_time in enumerate(wait_times)] 
-    
+    results = [do_some_work.remote(x, wait_time) for x, wait_time in enumerate(wait_times)]
+
     # Don't get the items in order, instead take them as they become ready
     unfinished = results
     actual_results = []
     while unfinished:
-        # ray.wait takes the list of references (unfinished) and divides it 
+        # ray.wait takes the list of references (unfinished) and divides it
         # into two list of the ones which are finished and the ones which aren't
         finished_tasks, unfinished = ray.wait(unfinished, num_returns=1)
         for finished_task in finished_tasks:
             # get the actual result from the reference
-            result = ray.get(finished_task)  
+            result = ray.get(finished_task)
             actual_results.append(result)
     print("Actual duration =", time.time() - start, "\nresults = ", actual_results)
-    
+
 if __name__ == '__main__':
     main()
