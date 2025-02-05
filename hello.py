@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 def main():
     print("Hello from aida-ray-workshop!")
 
